@@ -16,6 +16,11 @@
         public int ReceiveBufferSize { get; set; } = 1024;
 
         /// <summary>
+        /// Gets or sets the listen backlog size for when a server starts.
+        /// </summary>
+        public int ListenBacklog { get; set; } = 100;
+
+        /// <summary>
         /// Gets or sets the current position index within the buffer byte array.
         /// </summary>
         public int BufferPoolStartingOffset { get; set; } = 0;

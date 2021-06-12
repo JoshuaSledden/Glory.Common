@@ -22,8 +22,9 @@
 
             // When
             var bufferManager = new BufferManager(
+                mockConfig,
                 receiveBufferSize * numConnections * opsToPreAlloc,
-                receiveBufferSize, mockConfig);
+                receiveBufferSize);
 
             bufferManager.InitBuffer();
 
@@ -46,13 +47,13 @@
         public void ShouldReturnCorrectBooleanOnSetBuffer(int poolSize, int chunkSize, int currentIndex, bool expected)
         {
             // Given
-            var mockConfig = Options.Create(new ServerConfig()
+            var mockConfig = Options.Create(new ServerConfig
             {
                 BufferPoolStartingOffset = currentIndex
             });
 
             // When
-            var bufferManager = new BufferManager(poolSize, chunkSize, mockConfig);
+            var bufferManager = new BufferManager(mockConfig, poolSize, chunkSize);
             bufferManager.InitBuffer();
 
             SocketAsyncEventArgs readWriteEventArg;

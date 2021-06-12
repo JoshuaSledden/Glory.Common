@@ -87,9 +87,9 @@
         public void Init()
         {
             BufferPool = new BufferManager(
+                Config,
                 ReceiveBufferSize * MaxConnections * OperationsToPreAllocate,
-                ReceiveBufferSize,
-                Config);
+                ReceiveBufferSize);
 
             SocketAsyncEventArgs readWriteEventArg;
 
@@ -113,8 +113,8 @@
             ListenSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             ListenSocket.Bind(localEndPoint);
 
-            // Start the server with a listen backlog of 100 connections.
-            ListenSocket.Listen(100);
+            // Start the server with a listen backlog.
+            ListenSocket.Listen(Config.Value.ListenBacklog);
 
             // Post accepts on the listening socket.
             StartAccept(null);

@@ -6,6 +6,8 @@
     using System.Net.Sockets;
     using System.Text;
     using System.Threading.Tasks;
+    using Glory.Common.Lib.Config;
+    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Buffer manager creates a single, large buffer.
@@ -14,6 +16,11 @@
     /// </summary>
     public class BufferManager : IBufferManager
     {
+        /// <summary>
+        /// Gets or privately sets the configuration.
+        /// </summary>
+        public IOptions<ServerConfig> Config { get; private set; }
+
         /// <summary>
         /// Gets or privately sets the total number of bytes controlled by the pool.
         /// </summary>
@@ -42,15 +49,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferManager"/> class.
         /// </summary>
+        /// <param name="config">Injected server configuration.</param>
         /// <param name="poolSize">The byte size of the full pool.</param>
         /// <param name="chunkSize">The allocated chunk size of each pool segment.</param>
-        /// <param name="currentIndex">The starting index offset for the buffer pool.</param>
-        public BufferManager(int poolSize, int chunkSize, int currentIndex = 0)
+        public BufferManager(IOptions<ServerConfig> config, int poolSize, int chunkSize)
         {
+            Config = config;
+            CurrentIndex = Config.Value.BufferPoolStartingOffset;
             PoolSize = poolSize;
             ChunkSize = chunkSize;
             FreePoolOffsets = new Stack<int>();
-            CurrentIndex = currentIndex;
         }
 
         /// <summary>

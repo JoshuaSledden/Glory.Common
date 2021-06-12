@@ -1,17 +1,21 @@
-﻿using Glory.Common.Lib.Network.Server;
-using Moq;
-using System;
-using System.Net.Sockets;
-using Xunit;
-
-namespace Glory.Common.UnitTests.Network
+﻿namespace Glory.Common.UnitTests.Network
 {
+    using Glory.Common.Lib.Config;
+    using Glory.Common.Lib.Network.Server;
+    using Moq;
+    using System;
+    using System.Net.Sockets;
+    using Xunit;
+    using Microsoft.Extensions.Options;
+
     public class BufferManagerTests
     {
         [Fact]
         public void ShouldCorrectlyInitBuffer()
         {
             // Given
+            var mockConfig = Options.Create(new ServerConfig());
+
             var receiveBufferSize = 1024;
             var numConnections = 1000;
             var opsToPreAlloc = 2;
@@ -19,7 +23,7 @@ namespace Glory.Common.UnitTests.Network
             // When
             var bufferManager = new BufferManager(
                 receiveBufferSize * numConnections * opsToPreAlloc,
-                receiveBufferSize);
+                receiveBufferSize, mockConfig);
 
             bufferManager.InitBuffer();
 
@@ -42,9 +46,13 @@ namespace Glory.Common.UnitTests.Network
         public void ShouldReturnCorrectBooleanOnSetBuffer(int poolSize, int chunkSize, int currentIndex, bool expected)
         {
             // Given
+            var mockConfig = Options.Create(new ServerConfig()
+            {
+                BufferPoolStartingOffset = currentIndex
+            });
 
             // When
-            var bufferManager = new BufferManager(poolSize, chunkSize, currentIndex);
+            var bufferManager = new BufferManager(poolSize, chunkSize, mockConfig);
             bufferManager.InitBuffer();
 
             SocketAsyncEventArgs readWriteEventArg;

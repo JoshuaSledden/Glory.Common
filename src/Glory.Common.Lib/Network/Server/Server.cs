@@ -6,6 +6,8 @@
     using System.Net.Sockets;
     using System.ServiceModel.Channels;
     using System.Threading;
+    using Glory.Common.Lib.Config;
+    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Implements connection logic for the socket server.
@@ -18,6 +20,11 @@
         /// We do not allocate buffer space for accepts.
         /// </summary>
         private const int OperationsToPreAllocate = 2;
+
+        /// <summary>
+        /// Gets or privately sets the configuration.
+        /// </summary>
+        public IOptions<ServerConfig> Config { get; private set; }
 
         /// <summary>
         /// Gets or privately sets the maximum number of simultaneous connections.
@@ -63,15 +70,15 @@
         /// Initializes a new instance of the <see cref="Server"/> class.
         /// The server object initializes inactive and needs to be started by calling Init.
         /// </summary>
-        /// <param name="maxConnections">The maximum number of simultaneous client connections to this server instance.</param>
-        /// <param name="receiveBufferSize">The maximum buffer size for each I/O operation.</param>
-        public Server(int maxConnections = 1000, int receiveBufferSize = 1024)
+        /// <param name="config">Injected server configuration object.</param>
+        public Server(IOptions<ServerConfig> config)
         {
+            Config = config;
             TotalBytesRead = 0;
             ConnectionCount = 0;
-            MaxConnections = maxConnections;
-            ReceiveBufferSize = receiveBufferSize;
-            MaxAcceptedClients = new Semaphore(maxConnections, maxConnections);
+            MaxConnections = Config.Value.MaximumConnections;
+            ReceiveBufferSize = Config.Value.ReceiveBufferSize;
+            MaxAcceptedClients = new Semaphore(MaxConnections, MaxConnections);
         }
 
         /// <summary>
@@ -81,7 +88,8 @@
         {
             BufferPool = new BufferManager(
                 ReceiveBufferSize * MaxConnections * OperationsToPreAllocate,
-                ReceiveBufferSize);
+                ReceiveBufferSize,
+                Config);
 
             SocketAsyncEventArgs readWriteEventArg;
 

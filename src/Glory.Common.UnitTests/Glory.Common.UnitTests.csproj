@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Glory.Network.Lib\Glory.Common.Lib.csproj" />
+    <ProjectReference Include="..\Glory.Common.Lib\Glory.Common.Lib.csproj" />
   </ItemGroup>
 
 </Project>

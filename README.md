@@ -1,6 +1,6 @@
 ## Glory Common Lib
 <p align="center">
-  <a href="https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JoshuaSledden/Glory&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/5672afde2b3b458fbc8a04bfd6cd9013"></a><br>
+<a href="https://www.codacy.com/gh/JoshuaSledden/Glory.Common/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JoshuaSledden/Glory.Common&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/5672afde2b3b458fbc8a04bfd6cd9013"/></a><br>
 </p>
 
 <p align="center">

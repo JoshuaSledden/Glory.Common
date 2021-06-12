@@ -23,6 +23,6 @@
         /// <summary>
         /// Gets or sets the current position index within the buffer byte array.
         /// </summary>
-        public int BufferPoolStartingOffset { get; set; } = 0;
+        public int BufferPoolStartingOffset { get; set; 
     }
 }

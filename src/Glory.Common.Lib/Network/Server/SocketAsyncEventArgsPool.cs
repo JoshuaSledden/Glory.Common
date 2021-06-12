@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Sockets;
 
     /// <summary>
@@ -11,8 +10,10 @@
     /// </summary>
     public class SocketAsyncEventArgsPool
     {
-        // Pool of reusable SocketAsyncEventArgs objects.
-        private readonly Stack<SocketAsyncEventArgs> pool;
+        /// <summary>
+        /// Gets a pool of reusable SocketAsyncEventArgs objects.
+        /// </summary>
+        public Stack<SocketAsyncEventArgs> Pool { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketAsyncEventArgsPool"/> class.
@@ -20,7 +21,7 @@
         /// <param name="capacity">Initial capacity of objects.</param>
         public SocketAsyncEventArgsPool(int capacity)
         {
-            this.pool = new Stack<SocketAsyncEventArgs>(capacity);
+            Pool = new Stack<SocketAsyncEventArgs>(capacity);
         }
 
         /// <summary>
@@ -28,7 +29,7 @@
         /// </summary>
         public int Count
         {
-            get { return this.pool.Count; }
+            get { return Pool.Count; }
         }
 
         /// <summary>
@@ -37,9 +38,9 @@
         /// <returns>SocketAsyncEventArgs removed from the pool.</returns>
         public SocketAsyncEventArgs Pop()
         {
-            lock (this.pool)
+            lock (Pool)
             {
-                return this.pool.Pop();
+                return Pool.Pop();
             }
         }
 
@@ -52,12 +53,12 @@
             // make sure item isnt null
             if (item == null)
             {
-                throw new ArgumentNullException("Items added to a SocketAsyncEventArgsPool cannot be null");
+                throw new ArgumentNullException("Items added to a SocketAsyncEventArgsPool cannot be null.");
             }
 
-            lock (this.pool)
+            lock (Pool)
             {
-                this.pool.Push(item);
+                Pool.Push(item);
             }
         }
     }

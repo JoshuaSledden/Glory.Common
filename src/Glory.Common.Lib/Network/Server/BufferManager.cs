@@ -103,6 +103,7 @@
         public void FreeBuffer(SocketAsyncEventArgs args)
         {
             FreePoolOffsets.Push(args.Offset);
+            args.SetBuffer(null, 0, 0);
         }
     }
 }
